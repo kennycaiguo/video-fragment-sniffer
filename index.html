@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Video Fragment Sniffer</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main container">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <h1>Video Fragment Sniffer</h1>
+          <h2><small>Get fragments from a streamed video</small></h2>
+          <hr>
+          <form class="form-horizontal" id="getFragments">
+            <div class="form-group">
+              <label for="prefixURL" class="col-sm-3 control-label">Prefix URL</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="prefixURL" placeholder="http://xxx.xxx.xxx?fragment_number=">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="suffixURL" class="col-sm-3 control-label">Suffix URL</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="suffixURL" placeholder="&param1=xx&param2=yy&param3=zz">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="fragFrom" class="col-sm-3 control-label">From fragment</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="fragFrom" placeholder="xx">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="fragTo" class="col-sm-3 control-label">To fragment</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="fragTo" placeholder="xx">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="requestsDelay" class="col-sm-3 control-label">Request delay</label>
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="requestsDelay" placeholder="1000" value="500">
+                  <div class="input-group-addon"><small>milliseconds btw fragments</small></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group loading hidden">
+              <div class="col-sm-offset-3 col-sm-6">
+                <span class="text-info hidden">Waiting for fragment <span class="text-warning">n&deg;<span class="number">..</span></span></span>
+                <span class="text-danger hidden">An error occurred.<br />Make sure you've correctly filled the different fields..</span>
+                <span class="text-success hidden">All fragments processed <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-6">
+                <button type="submit" class="btn btn-default">Download fragments</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="main container">
+      <h3>Documentation</h3>
+      <p>When streaming a video, bits of it called <code>fragments</code> are being temporarily downloaded on your computer.</p>
+      <p>All you need to do is to open your browser developer tool <small>(generally by pressing F12)</small>, go in the tab "network" and look for entries of type "video/f4f". These types of entries are indeed the fragments we're looking for.</p>
+      <p>If you're lucky, this fragment will have a fairly easy pattern to understand, like the example below:</p>
+      <pre>http://web.q1.tf1.fr/2/USP-0x0/67/57/12976757/ssm/12976757.ism/12976757-audio%3D64000-video%3D600720-Seg1-Frag6<br />?vk=MTI5NzY3NTcuZjRt&st=jd8Or30-Ah4AxpH1YVQN9A&e=1459243107&t=1459113507&bu=WAT&login=the-voice&i=90.112.246.38<br />&u=609195cb6b997f0b387506de85171d39&sum=39f6cb9bc681bd51eb7d4e97ccc14230&min_bitrate=400000&max_bitrate=1000000&seek=wat<br />&als=34.65,30,5.77,1,633,6192,25.85,0,0,225,f,5.32,431,f,s,DRYXMXVZDBZU,2.11.3,225&hdcore=2.11.3</pre>
+      <p>If you look closely you'll notice the part that are interesting for us:<br />http://web.q1.tf1.fxxxxxxxxxxxxxxxxxdeo%3D600720-Seg1-<code>Frag6</code>?vk=MTI5NzY3Nxxxxxxxxxxxxxxxxx</p>
+      <p>Let's look at a second entry of type "video/f4f" to see if we can define a pattern:<br />http://web.q1.tf1.fr/2/Uxxxxxxxxxxxxxxxxx00720-Seg1-<code>Frag7</code>?vk=MTI5NzY3NTcuxxxxxxxxxxxxxxxxx</p>
+      <p>Looks like we've got our pattern! Now all you need to do is follow these few steps:</p>
+      <p>Copy the first part of the URL:</p>
+      <pre>http://web.q1.tf1.fr/2/USP-0x0/67/57/12976757/ssm/12976757.ism/12976757-audio%3D64000-video%3D600720-Seg1-Frag</pre>
+      <p>Paste it in the field "Prefix URL"</p>
+      <p>Copy the second part of the URL:</p>
+      <pre>?vk=MTI5NzY3NTcuZjRt&st=jd8Or30-Ah4AxpH1YVQN9A&e=1459243107&t=1459113507&bu=WAT&login=the-voice&i=90.112.246.38&u=609195cb6b997f0b387506de85171d39&sum=39f6cb9bc681bd51eb7d4e97ccc14230&min_bitrate=400000&max_bitrate=1000000&seek=wat&als=34.65,30,5.77,1,633,6192,25.85,0,0,225,f,5.32,431,f,s,DRYXMXVZDBZU,2.11.3,225&hdcore=2.11.3</pre>
+      <p>Paste it in the field "Suffix URL"</p>
+      <p>Select the range of fragments you want to get, and click on "Download fragments".</p>
+      <p class="text-danger"><strong>Note:</strong><br />A massive range of fragments might cause your browser to crash, your CPU to hate you, and to eventually burn your laps if you're working on a laptop...<br />be reasonable, go bit by bit ;)</p>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>

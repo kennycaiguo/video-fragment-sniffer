@@ -1,0 +1,32 @@
+body {
+  background-color: #f1f1f1;
+}
+
+.main.container {
+  background-color: #fff;
+  padding: 30px;
+  margin-bottom: 15px;
+  -webkit-box-shadow: 0 0px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 0px 3px rgba(0,0,0,0.3);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+label {
+  background-color: #f3f3f3;
+  padding-bottom: 8px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 767px) {
+  label {
+    background-color: transparent;
+    padding-bottom: inherit;
+  }
+}
