@@ -1,5 +1,6 @@
 # Video Fragment Sniffer
 
+This script aims to help you capturing a streaming video.  
 When streaming a video, bits of it called <code>fragments</code> are being temporarily sent to your browser.
 
 While some scripts will capture these fragments step by step, as the media is being streamed, Video Fragment Sniffer will perform a mass-download of all fragments without the need for you to even watch the video.  
@@ -30,6 +31,12 @@ Now lets get started with Video Fragment Sniffer by following these few steps:
 * Select the range of fragments you want to get
 * Set the delay in milliseconds between each fragment request (by default 500)
 * Click on "Download fragments"
+
+***
+
+### Screenshot:
+
+![Video Fragment Sniffer interface](screenshot.png?raw=true "Video Fragment Sniffer interface")
 
 ***
 
